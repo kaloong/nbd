@@ -5,6 +5,9 @@ import (
     "fmt"
     "os"
     "flag"
+    //"net"
+    //"io"
+    //"log"
 )
 
 //Wrapper function of getBizDay
@@ -98,14 +101,36 @@ func main() {
     if err != nil {
          panic(err)
     }
-    formats := [] string{"20060102", "2006/01/02", "2006-01-02"}
+    formats := [] string{"20060102", "2006/01/02", "2006-01-02", "2006.01.02"}
     for i := range formats {
         if timeStamp, err := time.Parse(formats[i], *bdFlag); err == nil {
             //t := time.Now().Add(*bdFlag)
             prev_bizday := getLastBizDay(timeStamp.In(loc))
             next_bizday := getNextBizDay(timeStamp.In(loc))
+            result := getPrevBizDay(timeStamp.In(loc))
             fmt.Printf("- Previous business day : %v\t%v\n", prev_bizday.Weekday(), prev_bizday.Format("2006-01-02 MST"))
             fmt.Printf("-     Next business day : %v\t%v\n", next_bizday.Weekday(), next_bizday.Format("2006-01-02 MST"))
         }
     }
+//
+//    listener, err := net.Listen("tcp","localhost:8000")
+//    if err != nil {
+//        log.Fatal(err)
+//    }
+//    for {
+//        conn, err := listener.Accept()
+//        if err != nil {
+//            log.Print(err)
+//            continue
+//        }
+//        handleConn(conn)
+//    }
+//}
+//
+//func handleConn( c net.Conn) {
+//    defer c.Close()
+//    _, err := io.WriteString( c, prev_bizday.Format("2006-01-02 MST") )
+//    if err != nil {
+//        return
+//    }
 }
